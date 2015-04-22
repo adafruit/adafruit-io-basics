@@ -1,10 +1,10 @@
 #include <SoftwareSerial.h>
 #include <Adafruit_FONA.h>
 
-#define FONA_RX 5
-#define FONA_TX 4
-#define FONA_RST 3
-#define BUTTON 2
+#define FONA_RX 2
+#define FONA_TX 3
+#define FONA_RST 4
+#define BUTTON 8
 
 // replace xxxxxxxxx with your Adafruit IO key
 #define AIO_KEY "xxxxxxxxx"
@@ -20,7 +20,7 @@ int last = 0;
 void setup() {
 
   // set button pin as an input
-  pinMode(BUTTON, INPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
 
   // wait until Serial is available
   while (!Serial);
@@ -37,6 +37,9 @@ void setup() {
     Serial.println(F("Couldn't find FONA"));
     while(1);
   }
+  
+  // turn on GPRS
+  fona.enableGPRS(true);
 
 }
 
@@ -50,11 +53,11 @@ void loop() {
     return;
 
   // send the proper value to AIO depending on button state
-  if(current == HIGH)
+  if(current == LOW)
     sendData("button", "1");
   else
     sendData("button", "0");
-
+   
   // save the button state
   last = current;
 
@@ -84,7 +87,7 @@ bool sendData(char *feed, char *value) {
     return false;
 
   fona.HTTP_POST_end();
-
+  
   // should return a HTTP 201
   return statuscode == 201;
 
