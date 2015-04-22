@@ -6,6 +6,7 @@
 #define FONA_RST 3
 #define BUTTON 2
 
+// replace xxxxxxxxx with your Adafruit IO key
 #define AIO_KEY "xxxxxxxxx"
 #define AIO_URL "http://io.adafruit.com/api/feeds/%s/data?X-AIO-Key=%s"
 

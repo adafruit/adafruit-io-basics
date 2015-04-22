@@ -20,7 +20,7 @@ PubSubClient client("io.adafruit.com", 1883, mqtt_callback, cc3000_client);
 #define WLAN_PASS "secretpass"
 #define WLAN_SECURITY WLAN_SEC_WPA2
 
-// replace with your Adafruit IO key
+// replace xxxxxxxxx with your Adafruit IO key
 #define AIO_KEY "xxxxxxxxx"
 #define MQTT_TOPIC "api/feeds/%s/data/send.json"
 
