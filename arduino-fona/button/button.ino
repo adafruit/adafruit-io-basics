@@ -6,12 +6,11 @@
 #define FONA_RST 3
 #define BUTTON 2
 
+#define AIO_KEY "xxxxxxxxx"
+#define AIO_URL "http://io.adafruit.com/api/feeds/%s/data?X-AIO-Key=%s"
+
 SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
 Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
-
-// these could be stored in flash to save sram
-char AIO_KEY[] = "49d7c9d96502134f9868878078d7cd93859bde7f";
-char AIO_URL[] = "http://io.adafruit.com/api/";
 
 // button state
 int current = 0;
@@ -72,7 +71,7 @@ bool sendData(char *feed, char *value) {
   char data[80];
 
   // pull together the url and post body
-  sprintf(url, "%sfeeds/%s/data?X-AIO-Key=%s", AIO_URL, feed, AIO_KEY);
+  sprintf(url, AIO_URL, feed, AIO_KEY);
   sprintf(data, "{\"value\": \"%s\"}", value);
 
   // print urls for debugging
