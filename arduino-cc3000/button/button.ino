@@ -31,7 +31,7 @@ int last = -1;
 void setup() {
 
   // set button pin as an input
-  pinMode(BUTTON, INPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
 
   // wait until serial is available
   while (!Serial);
@@ -85,7 +85,7 @@ void loop() {
     return;
 
   // send the proper value to AIO depending on button state
-  if(current == HIGH)
+  if(current == LOW)
     sendData("button", "1");
   else
     sendData("button", "0");
