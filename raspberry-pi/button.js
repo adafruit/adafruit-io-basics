@@ -4,7 +4,7 @@ var GpioStream = require('gpio-stream'),
 
 // replace xxxxxxxxxxx with your Adafruit IO key
 var AIO_KEY = 'xxxxxxxxxxx';
-    
+
 // aio init
 var aio = AIO(AIO_KEY);
 
