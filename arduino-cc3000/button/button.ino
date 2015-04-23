@@ -86,9 +86,9 @@ void loop() {
 
   // send the proper value to AIO depending on button state
   if(current == LOW)
-    sendData("button", "1");
+    sendData("Button", "1");
   else
-    sendData("button", "0");
+    sendData("Button", "0");
 
   // save the button state
   last = current;
