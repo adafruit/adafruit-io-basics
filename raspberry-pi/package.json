@@ -1,0 +1,27 @@
+{
+  "name": "adafruit-io-basics",
+  "version": "1.0.0",
+  "description": "adafruit io example scripts",
+  "main": "button.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adafruit/adafruit-io-basics"
+  },
+  "keywords": [
+    "adafruit",
+    "io"
+  ],
+  "author": "Todd Treece <todd@uniontownlabs.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adafruit/adafruit-io-basics/issues"
+  },
+  "homepage": "https://github.com/adafruit/adafruit-io-basics",
+  "dependencies": {
+    "adafruit-io": "^1.0.2",
+    "gpio-stream": "^1.0.14"
+  }
+}
