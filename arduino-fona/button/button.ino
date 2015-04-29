@@ -22,9 +22,6 @@ void setup() {
   // set button pin as an input
   pinMode(BUTTON, INPUT_PULLUP);
 
-  // wait until Serial is available
-  while (!Serial);
-
   // Serial init
   Serial.begin(115200);
   Serial.println(F("Initializing....(May take a few seconds)"));
