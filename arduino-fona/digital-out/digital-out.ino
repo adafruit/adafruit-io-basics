@@ -15,8 +15,8 @@ Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
 
 void setup() {
 
-  // set button pin as an input
-  pinMode(BUTTON, INPUT_PULLUP);
+  // set power switch pin as an output
+  pinMode(LIGHT, OUTPUT);
 
   // wait until Serial is available
   while (!Serial);

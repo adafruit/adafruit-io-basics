@@ -32,9 +32,6 @@ void setup() {
   // set power switch tail pin as an output
   pinMode(LIGHT, OUTPUT);
 
-  // wait until serial is available
-  while (!Serial);
-
   // Serial init
   Serial.begin(115200);
   Serial.println(F("Initializing....(May take a few seconds)"));
@@ -102,13 +99,13 @@ void mqtt_connect() {
 void mqtt_callback (char* topic, byte* payload, unsigned int length) {
 
   // dump topic and payload from subscription
-  Serial.print(F("Receieved: "));
+  Serial.print(F("Received: "));
   Serial.println(topic);
   Serial.write(payload, length);
-  Serial.println(topic);
+  Serial.println("");
 
   // make sure we received a message from the correct feed
-  if(strcmp(topic, MQTT_TOPIC) =! 0)
+  if(strcmp(topic, MQTT_TOPIC) != 0)
     return;
 
   // convert the MQTT payload to int
@@ -126,7 +123,7 @@ void mqtt_callback (char* topic, byte* payload, unsigned int length) {
 int to_int(byte* payload, int length) {
 
   int i;
-  char val[2];
+  char val[10];
 
   // convert payload to char
   for(i = 0; i < length; i++) {
