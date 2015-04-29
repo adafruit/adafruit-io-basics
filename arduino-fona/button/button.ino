@@ -37,7 +37,7 @@ void setup() {
     Serial.println(F("Couldn't find FONA"));
     while(1);
   }
-  
+
   // turn on GPRS
   fona.enableGPRS(true);
 
@@ -57,7 +57,7 @@ void loop() {
     sendData("button", "1");
   else
     sendData("button", "0");
-   
+
   // save the button state
   last = current;
 
@@ -87,7 +87,7 @@ bool sendData(char *feed, char *value) {
     return false;
 
   fona.HTTP_POST_end();
-  
+
   // should return a HTTP 201
   return statuscode == 201;
 
