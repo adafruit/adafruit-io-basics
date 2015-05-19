@@ -31,8 +31,13 @@ void setup() {
     while(1);
   }
 
-  // turn on GPRS
-  fona.enableGPRS(true);
+  fona.enableGPRS(false);
+  while(!fona.enableGPRS(true)) {
+    Serial.println(F("gprs init failed... trying again"));
+    delay(2000);
+  }
+  
+  Serial.println(F("gprs enabled"));
 
 }
 
