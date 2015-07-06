@@ -69,7 +69,7 @@ boolean CC3000connect(const char* wlan_ssid, const char* wlan_pass, uint8_t wlan
 
 /****************************** Feeds ***************************************/
 
-// Setup a feed called 'photocell' for subscribing to changes.
+// Setup a feed called 'photocell' for publishing changes.
 // Notice MQTT paths for AIO follow the form: <username>/feeds/<feedname>
 const char PHOTOCELL_FEED[] PROGMEM = AIO_USERNAME "/feeds/photocell";
 Adafruit_MQTT_Publish photocell = Adafruit_MQTT_Publish(&mqtt, PHOTOCELL_FEED);

@@ -69,7 +69,7 @@ boolean CC3000connect(const char* wlan_ssid, const char* wlan_pass, uint8_t wlan
 
 /****************************** Feeds ***************************************/
 
-// Setup a feed called 'button' for subscribing to changes.
+// Setup a feed called 'button' for publishing changes.
 // Notice MQTT paths for AIO follow the form: <username>/feeds/<feedname>
 const char BUTTON_FEED[] PROGMEM = AIO_USERNAME "/feeds/button";
 Adafruit_MQTT_Publish button = Adafruit_MQTT_Publish(&mqtt, BUTTON_FEED);
