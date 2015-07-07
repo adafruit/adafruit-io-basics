@@ -1,39 +1,31 @@
 /***************************************************
-  Adafruit MQTT Library CC3000 Example
+  Adafruit MQTT Library ESP8266 Example
 
-  Designed specifically to work with the Adafruit WiFi products:
-  ----> https://www.adafruit.com/products/1469
+  Must use ESP8266 Arduino from:
+    https://github.com/esp8266/Arduino
 
+  Works great with Adafruit's Huzzah ESP board:
+  ----> https://www.adafruit.com/product/2471
   Adafruit invests time and resources providing this open source code,
   please support Adafruit and open-source hardware by purchasing
   products from Adafruit!
 
-  Written by Limor Fried/Ladyada for Adafruit Industries.
+  Written by Tony DiCola for Adafruit Industries.
   Adafruit IO example additions by Todd Treece.
   MIT license, all text above must be included in any redistribution
  ****************************************************/
-#include <Adafruit_SleepyDog.h>
-#include <Adafruit_CC3000.h>
-#include <SPI.h>
-#include "utility/debug.h"
+#include <ESP8266WiFi.h>
 #include "Adafruit_MQTT.h"
-#include "Adafruit_MQTT_CC3000.h"
+#include "Adafruit_MQTT_Client.h"
 
 /****************************** Pins ******************************************/
 
-#define PHOTOCELL             A0  // analog 0
-#define ADAFRUIT_CC3000_IRQ   3  // MUST be an interrupt pin!
-#define ADAFRUIT_CC3000_VBAT  5  // VBAT & CS can be any digital pins.
-#define ADAFRUIT_CC3000_CS    10
-// Use hardware SPI for the remaining pins
-// On an UNO, SCK = 13, MISO = 12, and MOSI = 11
+#define PHOTOCELL       A0  // analog 0
 
 /************************* WiFi Access Point *********************************/
 
-#define WLAN_SSID       "...your SSID..."  // can't be longer than 32 characters!
+#define WLAN_SSID       "...your SSID..."
 #define WLAN_PASS       "...your password..."
-#define WLAN_SECURITY   WLAN_SEC_WPA2  // Can be: WLAN_SEC_UNSEC, WLAN_SEC_WEP,
-                                       //         WLAN_SEC_WPA or WLAN_SEC_WPA2
 
 /************************* Adafruit.io Setup *********************************/
 
@@ -44,8 +36,8 @@
 
 /************ Global State (you don't need to change this!) ******************/
 
-// Setup the main CC3000 class, just like a normal CC3000 sketch.
-Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT);
+// Create an ESP8266 WiFiClient class to connect to the MQTT server.
+WiFiClient client;
 
 // Store the MQTT server, client ID, username, and password in flash memory.
 // This is required for using the Adafruit MQTT library.
@@ -57,15 +49,8 @@ const char MQTT_CLIENTID[] PROGMEM  = AIO_KEY __DATE__ __TIME__;
 const char MQTT_USERNAME[] PROGMEM  = AIO_USERNAME;
 const char MQTT_PASSWORD[] PROGMEM  = AIO_KEY;
 
-// Setup the CC3000 MQTT class by passing in the CC3000 class and MQTT server and login details.
-Adafruit_MQTT_CC3000 mqtt(&cc3000, MQTT_SERVER, AIO_SERVERPORT, MQTT_CLIENTID, MQTT_USERNAME, MQTT_PASSWORD);
-
-// You don't need to change anything below this line!
-#define halt(s) { Serial.println(F( s )); while(1);  }
-
-// CC3000connect is a helper function that sets up the CC3000 and connects to
-// the WiFi network. See the cc3000helper.cpp tab above for the source!
-boolean CC3000connect(const char* wlan_ssid, const char* wlan_pass, uint8_t wlan_security);
+// Setup the MQTT client class by passing in the WiFi client and MQTT server and login details.
+Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, AIO_SERVERPORT, MQTT_CLIENTID, MQTT_USERNAME, MQTT_PASSWORD);
 
 /****************************** Feeds ***************************************/
 
@@ -84,20 +69,25 @@ void setup() {
 
   Serial.begin(115200);
 
-  Serial.println(F("Adafruit IO Example:"));
+  Serial.println(F("Adafruit IO Example"));
   Serial.print(F("Free RAM: ")); Serial.println(getFreeRam(), DEC);
 
-  // Initialise the CC3000 module
-  Serial.print(F("\nInit the CC3000..."));
-  if (! cc3000.begin())
-    halt("Failed");
+  // Connect to WiFi access point.
+  Serial.println(); Serial.println();
+  delay(10);
+  Serial.print(F("Connecting to "));
+  Serial.println(WLAN_SSID);
 
-  // attempt wifi connection
-  while (! CC3000connect(WLAN_SSID, WLAN_PASS, WLAN_SECURITY)) {
-    Serial.println(F("Retrying WiFi"));
-    while(1);
+  WiFi.begin(WLAN_SSID, WLAN_PASS);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(F("."));
   }
-  Serial.println(F("Connected to WiFi!"));
+  Serial.println();
+
+  Serial.println(F("WiFi connected"));
+  Serial.println(F("IP address: "));
+  Serial.println(WiFi.localIP());
 
   // connect to adafruit io
   connect();
@@ -154,10 +144,7 @@ void connect() {
       case 4: Serial.println(F("Bad user/pass")); break;
       case 5: Serial.println(F("Not authed")); break;
       case 6: Serial.println(F("Failed to subscribe")); break;
-      default:
-        Serial.println(F("Connection failed"));
-        CC3000connect(WLAN_SSID, WLAN_PASS, WLAN_SECURITY);
-        break;
+      default: Serial.println(F("Connection failed")); break;
     }
 
     if(ret >= 0)
