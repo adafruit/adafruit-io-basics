@@ -32,7 +32,7 @@ SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
 
 Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
 
-/************************* WiFi Access Point *********************************/
+/*************************** Cellular APN *************************************/
 
   // Optionally configure a GPRS APN, username, and password.
   // You might need to do this to access your network's GPRS/data
