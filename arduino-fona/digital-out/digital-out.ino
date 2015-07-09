@@ -24,7 +24,7 @@
 #include "Adafruit_MQTT_FONA.h"
 
 /****************************** Pins ****************************************/
-#define BUTTON      5
+#define LAMP        5
 #define FONA_RX     2
 #define FONA_TX     3
 #define FONA_RST    4
@@ -74,25 +74,21 @@ boolean FONAconnect(const __FlashStringHelper *apn, const __FlashStringHelper *u
 
 /****************************** Feeds ***************************************/
 
-// Setup a feed called 'button' for publishing changes.
+// Setup a feed called 'lamp' for subscribing to changes.
 // Notice MQTT paths for AIO follow the form: <username>/feeds/<feedname>
-const char BUTTON_FEED[] PROGMEM = AIO_USERNAME "/feeds/button";
-Adafruit_MQTT_Publish button = Adafruit_MQTT_Publish(&mqtt, BUTTON_FEED);
+const char LAMP_FEED[] PROGMEM = AIO_USERNAME "/feeds/lamp";
+Adafruit_MQTT_Subscribe lamp = Adafruit_MQTT_Subscribe(&mqtt, LAMP_FEED);
 
 /*************************** Sketch Code ************************************/
 
-// button state
-int current = 0;
-int last = -1;
-
 void setup() {
 
-  // set button pin as an input
-  pinMode(BUTTON, INPUT_PULLUP);
+  // set power switch tail pin as an output
+  pinMode(LAMP, OUTPUT);
 
   Serial.begin(115200);
 
-  Serial.println(F("Adafruit IO Example"));
+  Serial.println(F("Adafruit IO Example:"));
   Serial.print(F("Free RAM: ")); Serial.println(getFreeRam(), DEC);
 
   // Initialise the FONA module
@@ -105,12 +101,17 @@ void setup() {
   delay(3000);  // wait a few seconds to stabilize connection
   Watchdog.reset();
 
+  // listen for events on the lamp feed
+  mqtt.subscribe(&lamp);
+
   // connect to adafruit io
   connect();
 
 }
 
 void loop() {
+
+  Adafruit_MQTT_Subscribe *subscription;
 
   // Make sure to reset watchdog every loop iteration!
   Watchdog.reset();
@@ -122,25 +123,24 @@ void loop() {
       connect();
   }
 
-  // grab the current state of the button
-  current = digitalRead(BUTTON);
+  // this is our 'wait for incoming subscription packets' busy subloop
+  while (subscription = mqtt.readSubscription(1000)) {
 
-  // return if the value hasn't changed
-  if(current == last)
-    return;
+    // we only care about the lamp events
+    if (subscription == &lamp) {
 
-  // Now we can publish stuff!
-  Serial.print(F("\nSending button value: "));
-  Serial.print(current == LOW ? 1 : 0);
-  Serial.print("... ");
+      // convert mqtt ascii payload to int
+      char *value = lamp.lastread;
+      Serial.print(F("Received: "));
+      Serial.println(value);
+      int current = atoi(value);
 
-  if (! button.publish(current == LOW ? 1 : 0))
-    Serial.println(F("Failed."));
-  else
-    Serial.println(F("Success!"));
+      // write the current state to the power switch tail
+      digitalWrite(LAMP, current == 1 ? HIGH : LOW);
 
-  // save the button state
-  last = current;
+    }
+
+  }
 
 }
 
