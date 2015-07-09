@@ -43,8 +43,8 @@ Adafruit_FONA fona = Adafruit_FONA(FONA_RST);
 
 #define AIO_SERVER      "io.adafruit.com"
 #define AIO_SERVERPORT  1883
-#define AIO_USERNAME    "your_username"
-#define AIO_KEY         "xxxxxxxxxxxxx";
+#define AIO_USERNAME    "...your AIO username (see https://accounts.adafruit.com)..."
+#define AIO_KEY         "...your AIO key..."
 
 /************ Global State (you don't need to change this!) ******************/
 
