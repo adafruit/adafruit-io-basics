@@ -17,10 +17,8 @@
 #include <ESP8266WiFi.h>
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
-
-/****************************** Pins ******************************************/
-
-#define BUTTON          2
+#include <Wire.h>
+#include <Adafruit_AM2315.h>
 
 /************************* WiFi Access Point *********************************/
 
@@ -50,23 +48,20 @@ const char MQTT_USERNAME[] PROGMEM  = AIO_USERNAME;
 const char MQTT_PASSWORD[] PROGMEM  = AIO_KEY;
 
 // Setup the MQTT client class by passing in the WiFi client and MQTT server and login details.
-Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, AIO_SERVERPORT, MQTT_CLIENTID, MQTT_USERNAME, MQTT_PASSWORD);/****************************** Feeds ***************************************/
+Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, AIO_SERVERPORT, MQTT_CLIENTID, MQTT_USERNAME, MQTT_PASSWORD);
 
-// Setup a feed called 'button' for publishing changes.
-// Notice MQTT paths for AIO follow the form: <username>/feeds/<feedname>
-const char BUTTON_FEED[] PROGMEM = AIO_USERNAME "/feeds/button";
-Adafruit_MQTT_Publish button = Adafruit_MQTT_Publish(&mqtt, BUTTON_FEED);
+/****************************** Feeds ***************************************/
+
+// Setup a group called 'weather' for publishing changes.
+// Notice MQTT paths for AIO follow the form: <username>/groups/<feedname>
+const char WEATHER_FEED[] PROGMEM = AIO_USERNAME "/groups/weather";
+Adafruit_MQTT_Publish weather = Adafruit_MQTT_Publish(&mqtt, WEATHER_FEED);
 
 /*************************** Sketch Code ************************************/
 
-// button state
-int current = 0;
-int last = -1;
+Adafruit_AM2315 am2315;
 
 void setup() {
-
-  // set button pin as an input
-  pinMode(BUTTON, INPUT_PULLUP);
 
   Serial.begin(115200);
 
@@ -89,6 +84,11 @@ void setup() {
   Serial.println(F("IP address: "));
   Serial.println(WiFi.localIP());
 
+  if (! am2315.begin()) {
+    Serial.println(F("AM2315 not found, check wiring & pullups!"));
+    while (1);
+  }
+
   // connect to adafruit io
   connect();
 
@@ -103,25 +103,29 @@ void loop() {
       connect();
   }
 
-  // grab the current state of the button
-  current = digitalRead(BUTTON);
+  char sendbuffer[80];
+  char numberbuffer[20];
+  float temp = (am2315.readTemperature() * 1.8) + 32;
+  float humidity = am2315.readHumidity();
 
-  // return if the value hasn't changed
-  if(current == last)
-    return;
+  // add temp feed name
+  strcpy(sendbuffer, "temp,");
+
+  // add temp value
+  dtostrf(temp, 2, 6, numberbuffer);
+  strcat(sendbuffer, numberbuffer);
+
+  // add new line and humidity feed name
+  strcat(sendbuffer, "\nhumidity,");
 
   // Now we can publish stuff!
-  Serial.print(F("\nSending button value: "));
-  Serial.print(current == LOW ? 1 : 0);
-  Serial.print("... ");
+  Serial.println(F("\nSending: "));
+  Serial.println(sendbuffer);
 
-  if (! button.publish(current == LOW ? 1 : 0))
+  if (! weather.publish(sendbuffer))
     Serial.println(F("Failed."));
   else
     Serial.println(F("Success!"));
-
-  // save the button state
-  last = current;
 
 }
 

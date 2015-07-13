@@ -70,7 +70,6 @@ void setup() {
   Serial.begin(115200);
 
   Serial.println(F("Adafruit IO Example"));
-  Serial.print(F("Free RAM: ")); Serial.println(getFreeRam(), DEC);
 
   // Connect to WiFi access point.
   Serial.println(); Serial.println();

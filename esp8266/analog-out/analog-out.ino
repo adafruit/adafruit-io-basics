@@ -66,7 +66,6 @@ void setup() {
   Serial.begin(115200);
 
   Serial.println(F("Adafruit IO Example"));
-  Serial.print(F("Free RAM: ")); Serial.println(getFreeRam(), DEC);
 
   // Connect to WiFi access point.
   Serial.println(); Serial.println();
@@ -114,7 +113,7 @@ void loop() {
     if (subscription == &photocell) {
 
       // convert mqtt ascii payload to int
-      char *value = photocell.lastread;
+      char *value = (char *)photocell.lastread;
       Serial.print(F("Received: "));
       Serial.println(value);
       int reading = atoi(value);

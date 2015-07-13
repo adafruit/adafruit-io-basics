@@ -127,7 +127,7 @@ void loop() {
     if (subscription == &photocell) {
 
       // convert mqtt ascii payload to int
-      char *value = photocell.lastread;
+      char *value = (char *)photocell.lastread;
       Serial.print(F("Received: "));
       Serial.println(value);
       int reading = atoi(value);

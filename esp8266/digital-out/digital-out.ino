@@ -68,8 +68,7 @@ void setup() {
 
   Serial.begin(115200);
 
-  Serial.println(F("Adafruit IO Example:"));
-  Serial.print(F("Free RAM: ")); Serial.println(getFreeRam(), DEC);
+  Serial.println(F("Adafruit IO Example"));
 
   // Connect to WiFi access point.
   Serial.println(); Serial.println();
@@ -100,9 +99,6 @@ void loop() {
 
   Adafruit_MQTT_Subscribe *subscription;
 
-  // Make sure to reset watchdog every loop iteration!
-  Watchdog.reset();
-
   // ping adafruit io a few times to make sure we remain connected
   if(! mqtt.ping(3)) {
     // reconnect to adafruit io
@@ -117,7 +113,7 @@ void loop() {
     if (subscription == &lamp) {
 
       // convert mqtt ascii payload to int
-      char *value = lamp.lastread;
+      char *value = (char *)lamp.lastread;
       Serial.print(F("Received: "));
       Serial.println(value);
       int current = atoi(value);

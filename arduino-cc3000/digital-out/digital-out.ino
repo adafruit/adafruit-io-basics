@@ -127,7 +127,7 @@ void loop() {
     if (subscription == &lamp) {
 
       // convert mqtt ascii payload to int
-      char *value = lamp.lastread;
+      char *value = (char *)lamp.lastread;
       Serial.print(F("Received: "));
       Serial.println(value);
       int current = atoi(value);
