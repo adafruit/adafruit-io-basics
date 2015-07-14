@@ -93,7 +93,6 @@ void setup() {
   Serial.begin(115200);
 
   Serial.println(F("Adafruit IO Example"));
-  Serial.print(F("Free RAM: ")); Serial.println(getFreeRam(), DEC);
 
   // Initialise the FONA module
   while (! FONAconnect(F(FONA_APN), F(FONA_USERNAME), F(FONA_PASSWORD)))
@@ -129,12 +128,14 @@ void loop() {
   if(current == last)
     return;
 
+  int32_t value = (current == LOW ? 1 : 0);
+
   // Now we can publish stuff!
   Serial.print(F("\nSending button value: "));
-  Serial.print(current == LOW ? 1 : 0);
+  Serial.print(value);
   Serial.print("... ");
 
-  if (! button.publish(current == LOW ? 1 : 0))
+  if (! button.publish(value))
     Serial.println(F("Failed."));
   else
     Serial.println(F("Success!"));

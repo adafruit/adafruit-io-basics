@@ -96,9 +96,6 @@ void loop() {
 
   Adafruit_MQTT_Subscribe *subscription;
 
-  // Make sure to reset watchdog every loop iteration!
-  Watchdog.reset();
-
   // ping adafruit io a few times to make sure we remain connected
   if(! mqtt.ping(3)) {
     // reconnect to adafruit io

@@ -95,9 +95,6 @@ void setup() {
 
 void loop() {
 
-  // Make sure to reset watchdog every loop iteration!
-  Watchdog.reset();
-
   // ping adafruit io a few times to make sure we remain connected
   if(! mqtt.ping(3)) {
     // reconnect to adafruit io
@@ -117,7 +114,7 @@ void loop() {
   Serial.print(current);
   Serial.print("... ");
 
-  if (! photocell.publish(current))
+  if (! photocell.publish((int32_t)current))
     Serial.println(F("Failed."));
   else
     Serial.println(F("Success!"));

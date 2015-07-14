@@ -126,12 +126,14 @@ void loop() {
   if(current == last)
     return;
 
+  int32_t value = (current == LOW ? 1 : 0);
+
   // Now we can publish stuff!
   Serial.print(F("\nSending button value: "));
-  Serial.print(current == LOW ? 1 : 0);
+  Serial.print(value);
   Serial.print("... ");
 
-  if (! button.publish(current == LOW ? 1 : 0))
+  if (! button.publish(value))
     Serial.println(F("Failed."));
   else
     Serial.println(F("Success!"));

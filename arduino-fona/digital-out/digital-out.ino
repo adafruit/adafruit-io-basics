@@ -89,7 +89,6 @@ void setup() {
   Serial.begin(115200);
 
   Serial.println(F("Adafruit IO Example:"));
-  Serial.print(F("Free RAM: ")); Serial.println(getFreeRam(), DEC);
 
   // Initialise the FONA module
   while (! FONAconnect(F(FONA_APN), F(FONA_USERNAME), F(FONA_PASSWORD)))

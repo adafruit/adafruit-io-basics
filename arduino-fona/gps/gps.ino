@@ -66,7 +66,7 @@ Adafruit_MQTT_FONA mqtt(&fona, MQTT_SERVER, AIO_SERVERPORT, MQTT_CLIENTID, MQTT_
 
 // FONAconnect is a helper function that sets up the FONA and connects to
 // the GPRS network. See the fonahelper.cpp tab above for the source!
-boolean FONAconnect(void);
+boolean FONAconnect(const __FlashStringHelper *apn, const __FlashStringHelper *username, const __FlashStringHelper *password);
 
 /****************************** Feeds ***************************************/
 

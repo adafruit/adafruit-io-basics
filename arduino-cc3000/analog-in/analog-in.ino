@@ -128,7 +128,7 @@ void loop() {
   Serial.print(current);
   Serial.print("... ");
 
-  if (! photocell.publish(current))
+  if (! photocell.publish((int32_t)current))
     Serial.println(F("Failed."));
   else
     Serial.println(F("Success!"));
