@@ -71,8 +71,8 @@ boolean CC3000connect(const char* wlan_ssid, const char* wlan_pass, uint8_t wlan
 /****************************** Feeds ***************************************/
 
 // Setup a group called 'weather' for publishing changes.
-// Notice MQTT paths for AIO follow the form: <username>/groups/<feedname>
-const char WEATHER_FEED[] PROGMEM = AIO_USERNAME "/groups/weather";
+// Notice MQTT group CSV paths for AIO follow the form: <username>/groups/<groupname>/csv
+const char WEATHER_FEED[] PROGMEM = AIO_USERNAME "/groups/weather/csv";
 Adafruit_MQTT_Publish weather = Adafruit_MQTT_Publish(&mqtt, WEATHER_FEED);
 
 /*************************** Sketch Code ************************************/

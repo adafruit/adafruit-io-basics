@@ -76,8 +76,8 @@ boolean FONAconnect(const __FlashStringHelper *apn, const __FlashStringHelper *u
 /****************************** Feeds ***************************************/
 
 // Setup a group called 'weather' for publishing changes.
-// Notice MQTT paths for AIO follow the form: <username>/groups/<feedname>/csv
-const char WEATHER_FEED[] PROGMEM = AIO_USERNAME "/g/weather/csv";
+// Notice MQTT group CSV paths for AIO follow the form: <username>/groups/<groupname>/csv
+const char WEATHER_FEED[] PROGMEM = AIO_USERNAME "/groups/weather/csv";
 Adafruit_MQTT_Publish weather = Adafruit_MQTT_Publish(&mqtt, WEATHER_FEED);
 
 /*************************** Sketch Code ************************************/
