@@ -3,7 +3,7 @@ sudo: false
 before_install:
   - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
 install:
-  - arduino --install-library "Adafruit SleepyDog Library,Adafruit FONA Library,Adafruit CC3000 Library,Adafruit AM2315"
+  - arduino --install-library "Adafruit SleepyDog Library,Adafruit FONA Library,Adafruit CC3000 Library,Adafruit AM2315,Adafruit MQTT Library"
 script:
   - arduino --board arduino:avr:uno --save-prefs
   - arduino --verify $PWD/arduino-cc3000/analog-in/analog-in.ino
