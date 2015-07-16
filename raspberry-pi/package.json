@@ -1,6 +1,6 @@
 {
   "name": "adafruit-io-basics",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "adafruit io example scripts",
   "main": "button.js",
   "scripts": {
@@ -22,6 +22,6 @@
   "homepage": "https://github.com/adafruit/adafruit-io-basics",
   "dependencies": {
     "adafruit-io": "^2.0.0",
-    "gpio-stream": "^1.0.14"
+    "gpio-stream": "^1.0.16"
   }
 }
