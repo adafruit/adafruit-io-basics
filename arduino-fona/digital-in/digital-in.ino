@@ -24,7 +24,7 @@
 #include "Adafruit_MQTT_FONA.h"
 
 /****************************** Pins ****************************************/
-#define BUTTON      5
+#define BUTTON      8
 #define FONA_RX     2
 #define FONA_TX     3
 #define FONA_RST    4
