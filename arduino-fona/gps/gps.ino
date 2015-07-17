@@ -92,8 +92,7 @@ void setup() {
 
   Serial.println(F("Adafruit FONA GPS MQTT demo"));
 
-  // Initialise the FONA module
-  while (! FONAconnect(F(FONA_APN), F(FONA_USERNAME), F(FONA_PASSWORD)))
+  if (! FONAconnect(F(FONA_APN), F(FONA_USERNAME), F(FONA_PASSWORD)))
     halt("Retrying FONA");
 
   Serial.println(F("Connected to Cellular!"));
