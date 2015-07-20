@@ -3,7 +3,7 @@ sudo: false
 before_install:
   - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
 install:
-  - arduino --install-library "Adafruit SleepyDog Library,Adafruit FONA Library,Adafruit CC3000 Library,Adafruit AM2315,Adafruit MQTT Library"
+  - arduino --install-library "Adafruit SleepyDog Library,Adafruit FONA Library,Adafruit CC3000 Library,Adafruit AM2315,Adafruit MQTT Library,Adafruit IO Arduino"
 script:
   - arduino --board arduino:avr:uno --save-prefs
   - arduino --verify $PWD/arduino-cc3000/analog-in/analog-in.ino
@@ -23,6 +23,7 @@ script:
   - arduino --verify $PWD/esp8266/digital-in/digital-in.ino
   - arduino --verify $PWD/esp8266/digital-out/digital-out.ino
   - arduino --verify $PWD/esp8266/group-sensor/group-sensor.ino
+  - arduino --verify $PWD/esp8266/trigger/trigger.ino
 notifications:
   email:
     on_success: change
