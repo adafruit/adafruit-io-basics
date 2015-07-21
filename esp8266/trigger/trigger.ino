@@ -108,10 +108,14 @@ void battery_level() {
 
   // read the battery level from the ESP8266 analog in pin.
   // analog read level is 10 bit 0-1023 (0V-1V).
-  // our 10K & 2.2K voltage divider takes the max
+  // our 1M & 220K voltage divider takes the max
   // lipo value of 4.2V and drops it to 0.758V max.
-  // this means our max analog read value should be 774
+  // this means our min analog read value should be 590 (3.2V battery)
+  // and the max analog read value should be 774 (4.2V battery).
   int level = analogRead(A0);
+
+  // convert battery level to percent
+  level = map(level, 590, 774, 0, 100);
 
   // turn on wifi if we aren't connected
   if(WiFi.status() != WL_CONNECTED)
