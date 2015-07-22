@@ -39,9 +39,9 @@ void setup() {
   // get the current count position from eeprom
   byte battery_count = EEPROM.read(0);
 
-  // we only need this to happen once every minute,
+  // we only need this to happen once every 5 minutes,
   // so we use eeprom to track the count between resets.
-  if(battery_count >= 30) {
+  if(battery_count >= 150) {
     // reset counter
     battery_count = 0;
     // report battery level to Adafruit IO
@@ -110,12 +110,12 @@ void battery_level() {
   // analog read level is 10 bit 0-1023 (0V-1V).
   // our 1M & 220K voltage divider takes the max
   // lipo value of 4.2V and drops it to 0.758V max.
-  // this means our min analog read value should be 590 (3.2V battery)
-  // and the max analog read value should be 774 (4.2V battery).
+  // this means our min analog read value should be 580 (3.14V)
+  // and the max analog read value should be 774 (4.2V).
   int level = analogRead(A0);
 
   // convert battery level to percent
-  level = map(level, 590, 774, 0, 100);
+  level = map(level, 580, 774, 0, 100);
 
   // turn on wifi if we aren't connected
   if(WiFi.status() != WL_CONNECTED)
