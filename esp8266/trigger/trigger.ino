@@ -20,6 +20,12 @@
 // door gpio pin
 #define DOOR 13
 
+// how often to report battery level to adafruit IO (in minutes)
+#define BATTERY_INTERVAL 5
+
+// how long to sleep between checking the door state (in seconds)
+#define SLEEP_LENGTH 3
+
 // wifi credentials
 #define WLAN_SSID       "...your SSID..."
 #define WLAN_PASS       "...your password..."
@@ -39,9 +45,9 @@ void setup() {
   // get the current count position from eeprom
   byte battery_count = EEPROM.read(0);
 
-  // we only need this to happen once every 5 minutes,
+  // we only need this to happen once every X minutes,
   // so we use eeprom to track the count between resets.
-  if(battery_count >= 150) {
+  if(battery_count >= ((BATTERY_INTERVAL * 60) / SLEEP_LENGTH)) {
     // reset counter
     battery_count = 0;
     // report battery level to Adafruit IO
@@ -57,8 +63,8 @@ void setup() {
 
   // if door isn't open, we don't need to send anything
   if(digitalRead(DOOR) == LOW) {
-    // sleep a couple seconds before checking again
-    ESP.deepSleep(2000000, WAKE_RF_DISABLED);
+    // sleep a bit before checking again
+    ESP.deepSleep(SLEEP_LENGTH * 1000000, WAKE_RF_DISABLED);
     return;
   }
 
@@ -67,7 +73,7 @@ void setup() {
   door_open();
 
   // we are done here. go back to sleep.
-  ESP.deepSleep(2000000, WAKE_RF_DISABLED);
+  ESP.deepSleep(SLEEP_LENGTH * 1000000, WAKE_RF_DISABLED);
 
 }
 
