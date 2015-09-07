@@ -38,7 +38,9 @@ WiFiClient client;
 Adafruit_IO_Client aio = Adafruit_IO_Client(client, AIO_KEY);
 
 void setup() {
-
+  Serial.begin(115200);
+  Serial.println("HUZZAH Trigger Basic");
+  
   EEPROM.begin(512);
   pinMode(DOOR, INPUT_PULLUP);
 
@@ -63,18 +65,18 @@ void setup() {
 
   // if door isn't open, we don't need to send anything
   if(digitalRead(DOOR) == LOW) {
-    // sleep a bit before checking again
-    ESP.deepSleep(SLEEP_LENGTH * 1000000, WAKE_RF_DISABLED);
-    return;
+    Serial.println("Door closed");
+    // we don't do anything
+  } else {
+    // the door is open if we have reached here,
+    // so we should send a value to Adafruit IO.
+    Serial.println("Door is open!");
+    door_open();
   }
 
-  // the door is open if we have reached here,
-  // so we should send a value to Adafruit IO.
-  door_open();
-
   // we are done here. go back to sleep.
+  Serial.println("zzzz");
   ESP.deepSleep(SLEEP_LENGTH * 1000000, WAKE_RF_DISABLED);
-
 }
 
 // noop
@@ -85,13 +87,17 @@ void loop() {}
 void wifi_init() {
 
   // wifi init
+  Serial.println("Starting WiFi");
   WiFi.begin(WLAN_SSID, WLAN_PASS);
 
   // wait for connection
-  while (WiFi.status() != WL_CONNECTED)
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.write('.');
     delay(500);
+  }
 
   // AIO init
+  Serial.println("Connecting to Adafruit.io");
   aio.begin();
 
 }
@@ -99,12 +105,14 @@ void wifi_init() {
 void door_open() {
 
   // turn on wifi if we aren't connected
-  if(WiFi.status() != WL_CONNECTED)
+  if(WiFi.status() != WL_CONNECTED) {
     wifi_init();
-
+  }
+  
   // grab the door feed
   Adafruit_IO_Feed door = aio.getFeed("door");
 
+  Serial.println("Sending to Adafruit.io");
   // send door open value to AIO
   door.send("1");
 
@@ -122,7 +130,7 @@ void battery_level() {
 
   // convert battery level to percent
   level = map(level, 580, 774, 0, 100);
-
+  Serial.print("Battery level: "); Serial.print(level); Serial.println("%");
   // turn on wifi if we aren't connected
   if(WiFi.status() != WL_CONNECTED)
     wifi_init();
@@ -132,6 +140,4 @@ void battery_level() {
 
   // send battery level to AIO
   battery.send(level);
-
 }
-
