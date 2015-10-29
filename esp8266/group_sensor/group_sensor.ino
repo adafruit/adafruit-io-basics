@@ -117,7 +117,11 @@ void loop() {
 
   // add new line and humidity feed name
   strcat(sendbuffer, "\nhumidity,");
-
+  
+  // add humidity value
+  dtostrf(humidity, 2, 6, numberbuffer);
+  strcat(sendbuffer, numberbuffer);
+  
   // Now we can publish stuff!
   Serial.println(F("\nSending: "));
   Serial.println(sendbuffer);
