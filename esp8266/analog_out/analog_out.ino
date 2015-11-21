@@ -18,6 +18,9 @@
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 
+// function prototypes
+void connect(void);
+
 /****************************** Pins ******************************************/
 
 #define LED             2  // any PWM pin

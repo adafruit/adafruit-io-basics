@@ -20,6 +20,9 @@
 #include <Wire.h>
 #include <Adafruit_AM2315.h>
 
+// function prototypes
+void connect(void);
+
 /************************* WiFi Access Point *********************************/
 
 #define WLAN_SSID       "...your SSID..."
