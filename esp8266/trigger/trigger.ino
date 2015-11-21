@@ -17,6 +17,10 @@
 #include <EEPROM.h>
 #include "Adafruit_IO_Client.h"
 
+// function prototypes
+void battery_level();
+void door_open();
+
 // door gpio pin
 #define DOOR 13
 
