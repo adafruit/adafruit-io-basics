@@ -1,4 +1,5 @@
 #include <Adafruit_SleepyDog.h>
+#include <SoftwareSerial.h>
 #include "Adafruit_FONA.h"
 
 #define halt(s) { Serial.println(F( s )); while(1);  }
