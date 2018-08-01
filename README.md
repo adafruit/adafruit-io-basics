@@ -1,9 +1,3 @@
-# Adafruit IO Basics [![Build Status](https://travis-ci.org/adafruit/adafruit-io-basics.svg?branch=master)](https://travis-ci.org/adafruit/adafruit-io-basics)
+## We've moved! Check out the Adafruit IO Arduino Library over at https://github.com/adafruit/Adafruit_IO_Arduino
 
-This repo contains the examples for the Adafruit IO Basics series of
-guides which can be found on the [Adafruit Learning System][1].
-
-## License
-Copyright (c) 2015 Adafruit Industries. Licensed under the MIT license.
-
-[1]: https://learn.adafruit.com/category/adafruit-io
+#### Note: IO-Basics Guide Examples have been moved into the /examples/ folder: https://github.com/adafruit/Adafruit_IO_Arduino/tree/master/examples
